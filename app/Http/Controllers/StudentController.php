@@ -16,7 +16,7 @@ class StudentController extends Controller
     public function index()
     {
         $students = Student::with(['lessons' => function ($query) {
-            $query->select('*');
+            $query->select('id', 'lesson_code', 'lesson_name', 'number_unit', 'lesson_id', 'student_id', 'number');
         }])
             ->withSum('lessons as total_unit', 'number_unit')
             ->withSum('lessons as total_number', 'number_unit')->get();
@@ -86,15 +86,44 @@ class StudentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Student $student)
     {
-        $studentId = $request->input('studentId');
-        $lessonId = $request->input('lessonId');
+        //dd($student);
+        $lessonId = Lesson::find($request->input('lessonId'));
         $number = $request->input('number');
-
-        $student = Student::findOrFail($request->input('studentId'));
         //dd($student->lessons()->attach($lessonId));
-        $student->lessons()->sync($lessonId, ['number' => $number]);
+        if(!$student->lessons->contains($lessonId))
+        //$productId->likes()->attach($userId, ['state' => $request->input('state')]);
+            $student->lessons()->attach($lessonId, ['number' => $number]);
+        //dd($student->id);
+        foreach($student->lessons as $index => $s)
+        {
+            if(($student->lessons[$index]->pivot->lesson_id == $lessonId->id and $lessonId->students[$index]->pivot->student_id == $student->id))
+                $student->lessons()->updateExistingPivot($lessonId, ['number' => $number], false);
+            //dd($student->lessons[$index]->pivot->lesson_id == $lessonId->id);
+            //dd($lessonId->students[$index]->pivot->student_id == $student->id);
+            // if (($lessonId == $student->lessons[$index]->pivot->lesson_id) and ($lessonId->students[$index]->pivot->likes_id == $productId->id))
+            //     $productId->likes()->updateExistingPivot($userId, ['state' => $request->input('state')], false);
+        }
+
+        return response()->json([
+            'state' => true,
+            'message' => 'success',
+            'data' => null,
+        ], 200);
+        // $studentId = $request->input('studentId');
+        // $lessonId = $request->input('lessonId');
+        // $number = $request->input('number');
+
+        // $student = Student::findOrFail($studentId);
+        // //dd($student->lessons()->attach($lessonId));
+        // $student->lessons()->sync($lessonId, ['number' => $number]);
+
+        // return response()->json([
+        //     'state' => true,
+        //     'message' => 'success',
+        //     'data' => null,
+        // ], 200);
     }
 
     /**
@@ -105,7 +134,7 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        dd($student->lessons);
+        //dd($student->lessons);
 
         //$lesson = Lesson::find();
     }
@@ -130,10 +159,22 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        $lessonId = $request->input('lessonId');
+        $lessonId = Lesson::find($request->input('lessonId'));
         $number = $request->input('number');
         //dd($student->lessons()->attach($lessonId));
-        $student->lessons()->attach($lessonId, ['number' => $number]);
+        if(!$student->lessons->contains($lessonId))
+        //$productId->likes()->attach($userId, ['state' => $request->input('state')]);
+            $student->lessons()->attach($lessonId, ['number' => $number]);
+        //dd($student->id);
+        foreach($student->lessons as $index => $s)
+        {
+            if(($student->lessons[$index]->pivot->lesson_id == $lessonId->id and $lessonId->students[$index]->pivot->student_id == $student->id))
+                $student->lessons()->updateExistingPivot($lessonId, ['number' => $number], false);
+            //dd($student->lessons[$index]->pivot->lesson_id == $lessonId->id);
+            //dd($lessonId->students[$index]->pivot->student_id == $student->id);
+            // if (($lessonId == $student->lessons[$index]->pivot->lesson_id) and ($lessonId->students[$index]->pivot->likes_id == $productId->id))
+            //     $productId->likes()->updateExistingPivot($userId, ['state' => $request->input('state')], false);
+        }
     }
 
     /**
