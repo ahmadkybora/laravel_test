@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Lesson;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StudentController extends Controller
 {
@@ -15,18 +16,85 @@ class StudentController extends Controller
      */
     public function index()
     {
+        // $s = Student::all();
+        // dd($s);
+        // $lessonId = Lesson::all()->pluck('id');
+        // //dd($s);
+        // $lessons = Lesson::with(['students' => function ($query) use ($lessonId) {
+        //     //$query->select('id', 'lesson_code', 'lesson_name', 'number_unit', 'lesson_id', 'student_id', 'number');
+        //     dd($query->whereIn('lesson_id', $lessonId)->get()->toArray());
+        //     //$query->sum(DB::raw('number_unit * number'));
+        // }])->get();
+        //->withSum('lessons as sum_unit', 'number_unit')->get();
+        //$studentId = Student::all()->pluck('id')->toArray();
         $students = Student::with(['lessons' => function ($query) {
-            $query->select('id', 'lesson_code', 'lesson_name', 'number_unit', 'lesson_id', 'student_id', 'number');
+            $query->select('id', 'lesson_code', 'lesson_name', 'number_unit', 'lesson_id', 'student_id', 'number')
+              ;//->whereIn('student_id', $studentId)
+            //->selectRaw('sum(number) as l');
+              //->sum('number');
+            //->select('number', 'number_unit');
         }])
-            ->withSum('lessons as total_unit', 'number_unit')
-            ->withSum('lessons as total_number', 'number_unit')->get();
+        ->withSum('lessons as total_units', 'number_unit')
+        ->get();
+        // $studentId = Student::all()->pluck('id')->toArray();
+        // //dd($s);
+        //dd($students);
+        foreach($students as $index => $student)
+        {
+            //dd($students[$index]->lessons);
+            foreach($students[$index]->lessons as $i => $s){
+                if($students[$index]->id == $students[$index]->lessons[$i]->student_id)
+                    $students[$index]->total_number_units += $students[$index]->lessons[$i]->number_unit * $students[$index]->lessons[$i]->number;
+            }
+        }
+        // $students = Student::with(['lessons' => function ($query) use ($studentId) {
+        //     //$query->select('id', 'lesson_code', 'lesson_name', 'number_unit', 'lesson_id', 'student_id', 'number');
+        //     //dd($query->wherePivot());
+        //     // $query->whereIn('student_id', $studentId, function ($query) {
+        //     //     dd($query->select('*'));
+        //     // });
+        //     //$query->sum(DB::raw('number_unit * number'));
+        // }])
+        // ->whereIn('id', )
+        // ->withSum('lessons as sum_unit', 'number_unit')->get();
+
+        // $studentId = Student::all()->pluck('id');
+        // //dd($s);
+        // $students = Student::with(['lessons' => function ($query) use ($studentId) {
+        //     //$query->select('id', 'lesson_code', 'lesson_name', 'number_unit', 'lesson_id', 'student_id', 'number');
+        //     //dd($query->wherePivot());
+        //     $query->whereIn('student_id', $studentId, function ($query) {
+        //         dd($query->select('*'));
+        //     });
+        //     //$query->sum(DB::raw('number_unit * number'));
+        // }])
+        // ->withSum('lessons as sum_unit', 'number_unit')->get();
+
+        // dd($students);
+        // foreach($students as $index => $l)
+        // {
+        //     dd($students);
+        //     //dd($students->lessons[$index]->number_unit * $students->lessons[$index]->number_unit);
+        // }
+        // public function parts()
+        // {
+        //     return $this->belongsToMany('Part', 'project_part', 'project_id', 'part_id')
+        //         ->selectRaw('parts.*, sum(project_part.count) as pivot_count')
+        //         ->withTimestamps()
+        //         ->groupBy('project_part.pivot_part_id')
+        // }
+        // $students = Student::with(['lessons' => function ($query) {
+        //     $query->select('id', 'lesson_code', 'lesson_name', 'number_unit', 'lesson_id', 'student_id', 'number');
+        // }])
+        //     ->withSum('lessons as total_unit', 'number_unit')
+        //     ->withSum('lessons as total_number', 'number_unit')->get();
 
         //$students = Student::find(1)->lessons->sum('pivot.number');
         // $students = Student::with('lessons')
         // ->withSum('lessons as total_unit', 'number_unit')
         // ->withSum('lessons as total_number', 'number_unit')->get();
 
-//         $students = Student::withSum('lessons.pivot', 'number')->get(); 
+//         $students = Student::withSum('lessons.pivot', 'number')->get();
 // dd($students);
 //         foreach ($students as $student) {
 //         echo $student->comments_sum_votes;
