@@ -20,17 +20,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route::middleware(['cors'])->group(function () {
-    Route::prefix('students')->group(function () {
-        Route::get('/', [StudentController::class, 'index']);
-        Route::get('/{student}', [StudentController::class, 'show']);
-        //Route::patch('/{student}', [StudentController::class, 'update']);
-        Route::post('/{student}', [StudentController::class, 'store'])->middleware('cors');
-    });
 
-    Route::prefix('lessons')->group(function () {
-        Route::get('/', [LessonController::class, 'index']);
-        Route::patch('/{lesson}', [LessonController::class, 'update']);
-        Route::post('/{lesson}', [LessonController::class, 'destroy']);
-    });
-// });
+Route::prefix('students')->group(function () {
+    Route::get('/', [StudentController::class, 'index']);
+    Route::get('/{student}', [StudentController::class, 'show']);
+    Route::post('/{student}', [StudentController::class, 'store']);
+});
+
+Route::prefix('lessons')->group(function () {
+    Route::get('/', [LessonController::class, 'index']);
+    Route::patch('/{lesson}', [LessonController::class, 'update']);
+    Route::post('/{lesson}', [LessonController::class, 'destroy']);
+});

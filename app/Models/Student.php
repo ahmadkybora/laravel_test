@@ -16,14 +16,8 @@ class Student extends Model
         'national_code',
     ];
 
-    // public function lessons()
-    // {
-    //     return $this->belongsToMany(Lesson::class, 'lessons_students', 'student_id', 'lesson_id')
-    //                 ->withPivot('number');
-    // }
-
     public function lessons()
     {
-        return $this->belongsToMany(Lesson::class)->withPivot('number');
+        return $this->belongsToMany(Lesson::class)->withPivot('score');
     }
 }

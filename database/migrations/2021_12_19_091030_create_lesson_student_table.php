@@ -16,7 +16,7 @@ class CreateLessonStudentTable extends Migration
         Schema::create('lesson_student', function (Blueprint $table) {
             $table->foreignId('lesson_id');
             $table->foreignId('student_id');
-            $table->integer('number');
+            $table->integer('score');
         });
     }
 

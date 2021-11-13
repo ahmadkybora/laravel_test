@@ -12,17 +12,11 @@ class Lesson extends Model
     protected $fillable = [
         'lesson_name',
         'lesson_code',
-        'number_unit',
+        'units',
     ];
-
-    // public function students()
-    // {
-    //     return $this->belongsToMany(Lesson::class, 'lessons_students', 'lesson_id', 'student_id')
-    //                 ->withPivot('number');
-    // }
 
     public function students()
     {
-        return $this->belongsToMany(Student::class)->withPivot('number');
+        return $this->belongsToMany(Student::class)->withPivot('score');
     }
 }
