@@ -77,9 +77,9 @@ class LessonController extends Controller
     public function update(Request $request, Lesson $lesson)
     {
         $studentId = Student::find($request->input('student_id'));
-        $number = $request->input('score');
+        $score = $request->input('score');
         
-        $lesson->students()->updateExistingPivot($studentId->id, ['score' => $number]);
+        $lesson->students()->updateExistingPivot($studentId->id, ['score' => $score]);
 
         return response()->json([
             'state' => true,
@@ -99,11 +99,10 @@ class LessonController extends Controller
         $studentId = Student::find($request->input('student_id'));
 
         $lesson->students()->detach($studentId->id);
-
-            return response()->json([
-                'state' => true,
-                'message' => 'success',
-                'data' => null,
-            ], 200);
+        return response()->json([
+            'state' => true,
+            'message' => 'success',
+            'data' => null,
+        ], 200);
     }
 }

@@ -69,12 +69,7 @@ class StudentController extends Controller
 
         if(!$student->lessons->contains($lessonId))
             $student->lessons()->attach($lessonId, ['score' => $score]);
-
-        foreach($student->lessons as $index => $s)
-        {
-            if(($student->lessons[$index]->pivot->lesson_id == $lessonId->id and $lessonId->students[$index]->pivot->student_id == $student->id))
-                $student->lessons()->updateExistingPivot($lessonId, ['number' => $score], false);
-        }
+        // $student->lessons()->updateExistingPivot($lessonId->id, ['score' => $score]);
 
         return response()->json([
             'state' => true,
@@ -91,9 +86,7 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        //dd($student->lessons);
-
-        //$lesson = Lesson::find();
+        //
     }
 
     /**
@@ -116,17 +109,7 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        $lessonId = Lesson::find($request->input('lessonId'));
-        $score = $request->input('score');
-
-        if(!$student->lessons->contains($lessonId))
-            $student->lessons()->attach($lessonId, ['score' => $score]);
-
-        foreach($student->lessons as $index => $s)
-        {
-            if(($student->lessons[$index]->pivot->lesson_id == $lessonId->id and $lessonId->students[$index]->pivot->student_id == $student->id))
-                $student->lessons()->updateExistingPivot($lessonId, ['score' => $score], false);
-        }
+        //
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Lesson;
+use App\Models\Student;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StudentRequest extends FormRequest
