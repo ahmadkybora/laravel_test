@@ -47,16 +47,6 @@ class StudentController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -67,59 +57,20 @@ class StudentController extends Controller
         $lessonId = Lesson::find($request->input('lessonId'));
         $score = $request->input('score');
 
+        if($student->lessons->contains($lessonId))
+            return response()->json([
+                'state' => true,
+                'message' => 'Please see the score editing section',
+                'data' => null,
+            ], 201);
+
         if(!$student->lessons->contains($lessonId))
             $student->lessons()->attach($lessonId, ['score' => $score]);
-        // $student->lessons()->updateExistingPivot($lessonId->id, ['score' => $score]);
 
         return response()->json([
             'state' => true,
             'message' => 'success',
             'data' => null,
         ], 200);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Student  $student
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Student $student)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Student  $student
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Student $student)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Student  $student
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Student $student)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Student  $student
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Student $student)
-    {
-        //
     }
 }

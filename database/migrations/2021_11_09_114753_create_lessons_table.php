@@ -22,11 +22,11 @@ class CreateLessonsTable extends Migration
             $table->timestamps();
         });
 
-        $lesson_name = ['Math', 'Experimental', 'Quran', 'Sport', 'Farsi', 'Arabic', 'English', 'chemistry', 'Religious', 'social'];
-        $lesson_code = [101, 102, 103, 104, 105, 106, 107, 108, 109, 110];
-        $units = [11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+        $lesson_name = ['Math', 'Experimental', 'Quran', 'Sport', 'Farsi', 'Arabic', 'English', 'chemistry', 'Religious'];
+        $lesson_code = [101, 102, 103, 104, 105, 106, 107, 108, 109];
+        $units = [11, 12, 13, 14, 15, 16, 17, 18, 19];
 
-        for($i = 0; $i < 10; $i++)
+        for($i = 0; $i < 9; $i++)
         {
             $lesson = new Lesson();
             $lesson->lesson_name = $lesson_name[$i];
