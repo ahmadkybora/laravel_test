@@ -10,60 +10,10 @@
     </head>
     <body>
         <div class="container">
-            <table class="table table-striped">
-                <thead class="text-center">
-                    <tr class="text-center">
-                        <th>#</th>
-                        <th>Option</th> 
-                        <th>FullName</th>
-                        <th>Student Code</th>
-                        <th>Total Number Of Unit</th>
-                        <th>average</th>
-                    </tr>
-                </thead>
-                <tbody class="text-center">
-                    @foreach($students as $student)
-                        <tr class="text-center">
-                            <td>#</td>
-                            <td>
-                                <i onclick="myNested()" class="fas fa-user text-success"></i>
-                                <div class="nested" style="display: none;">
-                                    <table>
-                                        <table>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                        </table>
-                                    </table>
-                                </div>
-                            </td>
-                            <td>{{ $student->first_name . ' ' . $student->last_name }}</td>
-                            <td>{{ $student->student_code }}</td>
-                        @if($student->total_unit != null)
-                            <td>{{ $student->total_unit }}</td>
-                            @else
-                            <td>not have</td>
-                        @endif
-                        @if($student->total_unit != null)
-                            <td>{{ $student->total_unit }}</td>
-                            @else
-                            <td>not have</td>
-                        @endif
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <center>
+                <h1>Hello World!</h1>
+            </center>
         </div>
     </body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 </html>
-
-<script>
-function myNested() {
-  
-  document.getElementById("nested").style.display = "none";
-
-}
-</script>

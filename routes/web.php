@@ -17,9 +17,3 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::prefix('students')->group(function () {
-    Route::get('/', [StudentController::class, 'index']);
-    Route::patch('/{student}', [StudentController::class, 'update']);
-    Route::delete('/{student}', [StudentController::class, 'destroy']);
-});
